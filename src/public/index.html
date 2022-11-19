@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API NASA</title>
+    <link rel="shortcut icon" href="nasa-logo.png">
+</head>
+<body>
+
+    <header>
+        <div class="left-h">
+            <img src="https://www.nasa.gov/sites/default/files/thumbnails/image/nasa-logo-web-rgb.png" alt="Logo de la Nasa"/>
+        </div>
+        <div class="center-h">
+            <b><h2>API Nasa</h2></b>
+        </div>
+        <div class="right-h">
+            <h4>5IV7 Moreno Noguerón Ximena</h4>
+            <br><h6>Sistemas Distribuidos</h6>
+        </div>
+    </header>
+
+    <div class="info">
+        <p>Esta API proporciona un descubrimiento nuevo día a día de la Nasa, permite obtener
+            información y la imagen sobre el descubrimiento.
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="information">
+            <h4 id="titulo"></h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <i><p id="date"></p></i>
+            <br>
+            <p id="desc"></p>
+            
+        </div>
+
+        <div id="multimedia"></div>
+
+    </div>
+
+    <script>
+        // obtener los elementos del html
+        const titulo = document.querySelector('#titulo');
+        const descripcion = document.querySelector('#desc');
+        const fecha = document.querySelector('#date');
+        const mult = document.querySelector('#multimedia');
+
+        function obtenerDatos() {
+            console.log("Entra a obtener datos")
+            const token = 'aRE1OCSdwB9gSemgzqAhgqnyq2Gw3yLUvmkOLx0R';
+            const ruta = `https://api.nasa.gov/planetary/apod?api_key=${token}`;
+
+            fetch(ruta)
+                .then(respuesta => respuesta.json())
+                .then(resultado => mostrarDatos(resultado))
+        }
+
+        function mostrarDatos({ date, explanation, media_type, url, title }) {
+            console.log("Entra a mostrar datos");
+
+            titulo.innerHTML = title;
+            descripcion.innerHTML = explanation;
+            fecha.innerHTML = date;
+
+            // para la imagen o el video
+            if (media_type == 'video') {
+                mult.innerHTML = `<a title='${title}' href='${url}' target='_blank' > <video src='${url}' autoplay loop ></video> </a>`
+            } else {
+                mult.innerHTML = `<a title='${title}' href='${url}' target='_blank' > <img src='${url}' alt='Ha ocurrido un error' /> </a>`
+            }
+        }
+
+        window.addEventListener("load", obtenerDatos, false);
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            background-color: rgb(217, 216, 224);
+            font-size: 1.2rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h1{
+            font-size: 3rem;
+        }
+        h2{
+            font-size: 2.5rem;
+        }
+
+        h4{
+            font-size: 1.5rem;
+        }
+
+        header{
+            width: auto;
+            height: 5rem;
+            background-color: rgb(46, 45, 43);
+            padding: 0.6rem;
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        .left-h{
+            width: 20%;
+            display: flex;
+            justify-content: center;
+        }
+        .center-h{
+            width: 30%;
+            padding-top: 1rem;
+        }
+        .right-h{
+            width: 40%;
+        }
+
+        .info{
+            margin-top: 2rem;
+            margin-left: 3rem;
+            margin-right: 3rem;
+            padding: 1rem;
+            border: solid 3px rgba(46, 45, 43, 0.431);
+            border-radius: 6px;
+        }
+
+        .container{
+            margin-top: 2rem;
+            padding: 0.5rem;
+            width: auto;
+            height: 35rem;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .information{
+            width: 55%;
+            height: 100%;
+        }
+
+        #multimedia{
+            display: flex;
+            justify-self: center;
+            width: 50%;
+            height: 100%;
+            margin-left: 1rem;
+        }
+
+        img{
+            max-width: 95%;
+            max-height: 95%;
+        }
+        video{
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+    </style>
+
+</body>
+</html>
